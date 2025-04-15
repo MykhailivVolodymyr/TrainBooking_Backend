@@ -16,8 +16,4 @@
     <ProjectReference Include="..\TrainBooking.Infrastructure\TrainBooking.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>

@@ -11,10 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mapper\" />
     <Folder Include="DTOs\" />
-    <Folder Include="Servises.Imp\" />
-    <Folder Include="Servises\" />
+    <Folder Include="Mapper\" />
   </ItemGroup>
 
 </Project>
