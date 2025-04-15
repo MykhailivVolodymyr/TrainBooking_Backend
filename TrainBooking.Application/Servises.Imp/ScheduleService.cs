@@ -15,9 +15,14 @@ namespace TrainBooking.Application.Servises.Imp
         {
             _scheduleRepository = scheduleRepository;
         }
-        public Task<IEnumerable<ScheduleDto>> GetTrainSchedule(string cityFrom, string cityTo, DateTime date)
+        public Task<IEnumerable<ScheduleDto>> GetTrainScheduleAsync(string cityFrom, string cityTo, DateTime date)
         {
           return _scheduleRepository.GetTrainSchedule(cityFrom, cityTo, date);
+        }
+
+        public Task<IEnumerable<ScheduleTransitDto>> GetTrainScheduleByCityAndDateAsync(string city, DateTime date, bool isArrival)
+        {
+            return _scheduleRepository.GetTrainScheduleByCityAndDate(city, date, isArrival);
         }
     }
 }

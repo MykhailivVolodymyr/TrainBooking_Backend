@@ -9,6 +9,7 @@ namespace TrainBooking.Application.Servises
 {
     public interface IScheduleService
     {
-        Task<IEnumerable<ScheduleDto>> GetTrainSchedule(string cityFrom, string cityTo, DateTime date);
+        Task<IEnumerable<ScheduleDto>> GetTrainScheduleAsync(string cityFrom, string cityTo, DateTime date);
+        Task<IEnumerable<ScheduleTransitDto>> GetTrainScheduleByCityAndDateAsync(string city, DateTime date, bool isArrival);
     }
 }

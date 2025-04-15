@@ -10,5 +10,6 @@ namespace TrainBooking.Domain.Abstractions
     public interface IScheduleRepository
     {
         Task<IEnumerable<ScheduleDto>> GetTrainSchedule(string cityFrom, string cityTo, DateTime date);
+        Task<IEnumerable<ScheduleTransitDto>> GetTrainScheduleByCityAndDate(string city, DateTime date, bool isArrival);
     }
 }

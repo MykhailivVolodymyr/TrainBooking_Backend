@@ -14,7 +14,6 @@ namespace TrainBooking.API.Controllers
     {
         private readonly IScheduleService _scheduleService;
 
-        // Ін'єкція залежностей для репозиторія
         public ScheduleController(IScheduleService scheduleService)
         {
             _scheduleService = scheduleService;
@@ -27,25 +26,38 @@ namespace TrainBooking.API.Controllers
             try
             {
                 // Викликаємо метод репозиторію для отримання розкладу
-                var schedules = await _scheduleService.GetTrainSchedule(cityFrom, cityTo, date);
-
-                // Якщо не знайдено жодного розкладу, повертаємо 404
+                var schedules = await _scheduleService.GetTrainScheduleAsync(cityFrom, cityTo, date);
                 if (schedules == null || !schedules.Any())
                 {
                     return NotFound("Розклад не знайдено для вказаних міст і дати.");
                 }
-
-                // Повертаємо результат з кодом 200 OK
                 return Ok(schedules);
             }
             catch (Exception ex)
             {
-                // Логування помилки, якщо потрібно
                  return StatusCode(500, "Виникла помилка при отриманні розкладу: " + ex.Message);
-
-                // Повертаємо загальну помилку сервера
-               // return StatusCode(500, "Виникла помилка при отриманні розкладу.");
             }
         }
+
+
+        [HttpGet("GetScheduleTransit")]
+        public async Task<ActionResult<IEnumerable<ScheduleTransitDto>>> GetTrainScheduleByCityAndDate(string city, DateTime date, bool isArrival)
+        {
+            try
+            {
+                // Викликаємо метод сервісу для отримання розкладу
+                var schedules = await _scheduleService.GetTrainScheduleByCityAndDateAsync(city, date, isArrival);
+                if (schedules == null || !schedules.Any())
+                {
+                    return NotFound("Розклад не знайдено для вказаного міста і дати.");
+                }
+                return Ok(schedules);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Виникла помилка при отриманні розкладу: " + ex.Message);
+            }
+        }
+
     }
 }

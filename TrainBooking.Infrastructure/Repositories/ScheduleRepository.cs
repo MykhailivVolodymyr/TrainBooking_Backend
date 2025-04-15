@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +70,59 @@ namespace TrainBooking.Infrastructure.Repositories
                         RealDepartureDateToCity = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("RealDepartureDateToCity"))),
                         ArrivalTimeToCity = TimeOnly.FromTimeSpan((TimeSpan)reader["ArrivalTimeToCity"])
                     };
+                    schedules.Add(schedule);
+                }
+            }
+
+            return schedules;
+        }
+
+
+
+        public async Task<IEnumerable<ScheduleTransitDto>> GetTrainScheduleByCityAndDate(string city, DateTime date, bool isArrival)
+        {
+            var schedules = new List<ScheduleTransitDto>();
+
+            var connection = dbContext.Database.GetDbConnection();
+            await using (connection)
+            {
+                await connection.OpenAsync();
+
+                await using var command = connection.CreateCommand();
+                command.CommandText = "dbo.GetTrainScheduleByCityAndDate";
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Параметр @City
+                var paramCity = command.CreateParameter();
+                paramCity.ParameterName = "@City";
+                paramCity.Value = city;
+                command.Parameters.Add(paramCity);
+
+                // Параметр @Date
+                var paramDate = command.CreateParameter();
+                paramDate.ParameterName = "@Date";
+                paramDate.Value = date.Date;
+                command.Parameters.Add(paramDate);
+
+                // Параметр @IsArrival
+                var paramArrival = command.CreateParameter();
+                paramArrival.ParameterName = "@IsArrival";
+                paramArrival.Value = isArrival;
+                command.Parameters.Add(paramArrival);
+
+                await using var reader = await command.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    var schedule = new ScheduleTransitDto
+                    {
+                        TrainNumber = reader.GetString(reader.GetOrdinal("TrainNumber")),
+                        RouteCities = reader.GetString(reader.GetOrdinal("RouteCities")),
+                        Time = TimeOnly.FromTimeSpan((TimeSpan)reader["Time"]),
+                        StationName = reader.GetString(reader.GetOrdinal("StationName"))
+                    };
+
+
                     schedules.Add(schedule);
                 }
             }
