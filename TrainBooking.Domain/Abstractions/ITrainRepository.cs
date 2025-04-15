@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TrainBooking.Domain.Entities;
+using TrainBooking.Domain.Models;
 
 namespace TrainBooking.Domain.Abstractions
 {
-    public interface IRouteRepository
+    public interface ITrainRepository
     {
-        Task<IEnumerable<RouteDetailsDto>> GetRouteDetailsByTrainNumberAsync(string trainNumber);
+        Task<Train?> GetByNumberAsync(string trainNumber);
     }
 }

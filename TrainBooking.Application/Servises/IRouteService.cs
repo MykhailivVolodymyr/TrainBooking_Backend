@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TrainBooking.Domain.Entities;
 
-namespace TrainBooking.Domain.Abstractions
+namespace TrainBooking.Application.Servises
 {
-    public interface IRouteRepository
+    public interface IRouteService
     {
         Task<IEnumerable<RouteDetailsDto>> GetRouteDetailsByTrainNumberAsync(string trainNumber);
     }
