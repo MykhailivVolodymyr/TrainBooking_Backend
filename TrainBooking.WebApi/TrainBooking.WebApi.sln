@@ -5,6 +5,12 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.WebApi", "TrainBooking.WebApi.csproj", "{AA4EB7C7-0B61-426F-9F19-9F790B3CC1B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Domain", "..\TrainBooking.Domain\TrainBooking.Domain.csproj", "{23B9E0C0-7A68-424C-AA8C-1E60572A8C14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Application", "..\TrainBooking.Application\TrainBooking.Application.csproj", "{C971AD91-EC80-45CC-B2A7-9563323AF5FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Infrastructure", "..\TrainBooking.Infrastructure\TrainBooking.Infrastructure.csproj", "{32A16FD2-65AD-47C3-B46E-79D2304B4B0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{AA4EB7C7-0B61-426F-9F19-9F790B3CC1B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA4EB7C7-0B61-426F-9F19-9F790B3CC1B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA4EB7C7-0B61-426F-9F19-9F790B3CC1B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B9E0C0-7A68-424C-AA8C-1E60572A8C14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B9E0C0-7A68-424C-AA8C-1E60572A8C14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B9E0C0-7A68-424C-AA8C-1E60572A8C14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B9E0C0-7A68-424C-AA8C-1E60572A8C14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C971AD91-EC80-45CC-B2A7-9563323AF5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C971AD91-EC80-45CC-B2A7-9563323AF5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C971AD91-EC80-45CC-B2A7-9563323AF5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C971AD91-EC80-45CC-B2A7-9563323AF5FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A16FD2-65AD-47C3-B46E-79D2304B4B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A16FD2-65AD-47C3-B46E-79D2304B4B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A16FD2-65AD-47C3-B46E-79D2304B4B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A16FD2-65AD-47C3-B46E-79D2304B4B0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,4 +10,14 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TrainBooking.Application\TrainBooking.Application.csproj" />
+    <ProjectReference Include="..\TrainBooking.Domain\TrainBooking.Domain.csproj" />
+    <ProjectReference Include="..\TrainBooking.Infrastructure\TrainBooking.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

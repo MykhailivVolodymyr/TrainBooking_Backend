@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TrainBooking.Domain\TrainBooking.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mapper\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Servises.Imp\" />
+    <Folder Include="Servises\" />
+  </ItemGroup>
+
 </Project>

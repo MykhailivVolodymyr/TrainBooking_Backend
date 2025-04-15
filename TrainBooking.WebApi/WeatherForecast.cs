@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace TrainBooking.WebApi
 {
     public class WeatherForecast
@@ -11,3 +13,5 @@ namespace TrainBooking.WebApi
         public string? Summary { get; set; }
     }
 }
+
+
