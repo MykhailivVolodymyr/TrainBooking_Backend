@@ -17,7 +17,7 @@ namespace TrainBooking.WebApi.Controllers
             _trainStructureService = trainStructureService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("{trainNumber}/structure")]
         public async Task<IActionResult> GetTrainStructure(string trainNumber)
         {

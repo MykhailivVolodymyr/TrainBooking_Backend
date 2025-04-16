@@ -24,7 +24,8 @@ namespace TrainBooking.Infrastructure.Providers
         {
             var claims = new[]
                 {
-                    new Claim("userId", user.UserId.ToString())
+                    new Claim("userId", user.UserId.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
                 };
             var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
                 SecurityAlgorithms.HmacSha256);

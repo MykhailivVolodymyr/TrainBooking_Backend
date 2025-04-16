@@ -60,6 +60,14 @@ namespace TrainBooking.WebApi.Extensions
                         }
                     };
                 });
+
+            // Додаємо політики для ролей
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin")); // Доступ лише для Admin
+                options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));   // Доступ лише для User
+            });
+
             services.AddAuthorization();
             return services;
         }
