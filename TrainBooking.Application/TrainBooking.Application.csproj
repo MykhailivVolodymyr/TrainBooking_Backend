@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TrainBooking.Domain\TrainBooking.Domain.csproj" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mapper\" />
+    <ProjectReference Include="..\TrainBooking.Domain\TrainBooking.Domain.csproj" />
   </ItemGroup>
 
 </Project>

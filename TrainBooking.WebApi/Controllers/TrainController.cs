@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TrainBooking.Application.Servises;
 using TrainBooking.Application.Servises.Imp;
 
@@ -16,6 +17,7 @@ namespace TrainBooking.WebApi.Controllers
             _trainStructureService = trainStructureService;
         }
 
+        [Authorize]
         [HttpGet("{trainNumber}/structure")]
         public async Task<IActionResult> GetTrainStructure(string trainNumber)
         {
