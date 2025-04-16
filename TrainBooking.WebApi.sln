@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.WebApi", "TrainBooking.WebApi.csproj", "{AA4EB7C7-0B61-426F-9F19-9F790B3CC1B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.WebApi", "TrainBooking.WebApi\TrainBooking.WebApi.csproj", "{AA4EB7C7-0B61-426F-9F19-9F790B3CC1B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Domain", "..\TrainBooking.Domain\TrainBooking.Domain.csproj", "{23B9E0C0-7A68-424C-AA8C-1E60572A8C14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Domain", "TrainBooking.Domain\TrainBooking.Domain.csproj", "{23B9E0C0-7A68-424C-AA8C-1E60572A8C14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Application", "..\TrainBooking.Application\TrainBooking.Application.csproj", "{C971AD91-EC80-45CC-B2A7-9563323AF5FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Application", "TrainBooking.Application\TrainBooking.Application.csproj", "{C971AD91-EC80-45CC-B2A7-9563323AF5FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Infrastructure", "..\TrainBooking.Infrastructure\TrainBooking.Infrastructure.csproj", "{32A16FD2-65AD-47C3-B46E-79D2304B4B0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBooking.Infrastructure", "TrainBooking.Infrastructure\TrainBooking.Infrastructure.csproj", "{32A16FD2-65AD-47C3-B46E-79D2304B4B0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
