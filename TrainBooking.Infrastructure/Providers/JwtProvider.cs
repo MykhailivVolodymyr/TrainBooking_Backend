@@ -39,5 +39,36 @@ namespace TrainBooking.Infrastructure.Providers
 
             return tokenValue;
         }
+
+        // Отримання userId з токена
+        public int GetUserIdFromToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_jwtOptions.SecretKey);
+
+            try
+            {
+                // Верифікація та декодування токена
+                var claimsPrincipal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                }, out var validatedToken);
+
+                var userIdClaim = claimsPrincipal.FindFirst("userId");
+                if (userIdClaim == null)
+                {
+                    throw new UnauthorizedAccessException("UserId claim is missing");
+                }
+
+                return int.Parse(userIdClaim.Value);
+            }
+            catch (Exception)
+            {
+                throw new UnauthorizedAccessException("Invalid or expired token");
+            }
+        }
     }
 }

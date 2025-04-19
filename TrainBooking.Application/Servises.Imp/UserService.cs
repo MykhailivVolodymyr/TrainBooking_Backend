@@ -51,10 +51,11 @@ namespace TrainBooking.Application.Servises.Imp
         public async Task<string> Login(UserLoginDto userLoginDto)
         {
             var user = await _userRepository.GetUserByEmailAsync(userLoginDto.LoginOrEmail);
-            Console.WriteLine(user.Role);
 
             if (user == null)
                 user = await _userRepository.GetUserByLoginAsync(userLoginDto.LoginOrEmail);
+
+            Console.WriteLine(user.Role);
 
             if (user == null)
                 throw new UnauthorizedAccessException("Користувача не знайдено");
@@ -65,6 +66,7 @@ namespace TrainBooking.Application.Servises.Imp
                 throw new UnauthorizedAccessException("Невірний пароль");
 
             var token = _jwtProvider.GenerateToken(user);
+            
 
             // Якщо все ок, повертаємо токен (або що потрібно)
             return token;

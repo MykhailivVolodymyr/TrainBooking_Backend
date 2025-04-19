@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TrainBooking.Application.DTOs;
 using TrainBooking.Application.Servises;
+using TrainBooking.Infrastructure.Providers;
 
 namespace TrainBooking.WebApi.Controllers
 {
@@ -10,10 +13,12 @@ namespace TrainBooking.WebApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor)
+        private readonly JwtOptions _jwtOptions;
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, IOptions<JwtOptions> options)
         {
             _userService = userService;
             _httpContextAccessor = httpContextAccessor;
+            _jwtOptions = options.Value;
         }
 
         [HttpPost("register")]
@@ -21,6 +26,7 @@ namespace TrainBooking.WebApi.Controllers
         {
             try
             {
+               
                 await _userService.AddAsync(userDto);
                 return StatusCode(201, "Користувача успішно зареєстровано");
             }
@@ -41,7 +47,15 @@ namespace TrainBooking.WebApi.Controllers
             try
             {
                 var token = await _userService.Login(userLoginDto);
-                _httpContextAccessor.HttpContext?.Response.Cookies.Append("Jwt-token", token);
+                _httpContextAccessor.HttpContext?.Response.Cookies.Append("Jwt-token", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true,
+                    Expires = DateTimeOffset.UtcNow.AddHours(_jwtOptions.ExpiresHours)
+                });
+
+
                 return Ok(new { token });
             }
             catch (UnauthorizedAccessException ex)
@@ -52,6 +66,16 @@ namespace TrainBooking.WebApi.Controllers
             {
                 return StatusCode(500, new { error = e.Message });
             }
+        }
+
+        [Authorize]
+        [HttpPost("Logout")]
+        public IActionResult Logout()
+        {
+            // Видалення куки з токеном
+            Response.Cookies.Delete("Jwt-token");
+            
+            return Ok(new { message = "Logged out successfully" });
         }
     }
 }

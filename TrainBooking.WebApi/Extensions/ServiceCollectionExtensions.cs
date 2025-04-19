@@ -23,6 +23,7 @@ namespace TrainBooking.WebApi.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtProvider, JwtProvider>();
+            
             return services;
         }
 
