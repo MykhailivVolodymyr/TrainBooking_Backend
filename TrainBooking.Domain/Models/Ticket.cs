@@ -17,11 +17,7 @@ public partial class Ticket
 
     public decimal TicketPrice { get; set; }
 
-    public int ScheduleId { get; set; }
-
     public virtual Payment? Payment { get; set; }
-
-    public virtual Schedule Schedule { get; set; } = null!;
 
     public virtual Seat Seat { get; set; } = null!;
 

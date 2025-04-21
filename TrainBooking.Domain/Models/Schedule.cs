@@ -17,7 +17,7 @@ public partial class Schedule
 
     public TimeOnly ArrivedTime { get; set; }
 
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+    public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
 
     public virtual Train Train { get; set; } = null!;
 }

@@ -182,10 +182,10 @@ public partial class TrainBookingDbContext : DbContext
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK__Ticket__PaymentI__6383C8BA");
 
-            entity.HasOne(d => d.Schedule).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.ScheduleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Ticket_Schedule");
+            //entity.HasOne(d => d.Schedule).WithMany(p => p.Tickets)
+            //    .HasForeignKey(d => d.ScheduleId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_Ticket_Schedule");
 
             entity.HasOne(d => d.Seat).WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.SeatId)
@@ -243,6 +243,11 @@ public partial class TrainBookingDbContext : DbContext
                 .HasForeignKey(d => d.TrainId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK__Trip__TrainId__5629CD9C");
+
+            entity.HasOne(d => d.Schedule).WithMany(p => p.Trips)
+               .HasForeignKey(d => d.ScheduleId)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_Ticket_Schedule__");
         });
 
         modelBuilder.Entity<User>(entity =>

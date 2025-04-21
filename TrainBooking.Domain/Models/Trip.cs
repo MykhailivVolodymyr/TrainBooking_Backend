@@ -20,6 +20,8 @@ public partial class Trip
     public virtual Station EndStation { get; set; } = null!;
 
     public virtual Station StartStation { get; set; } = null!;
+    public int ScheduleId { get; set; }
+    public virtual Schedule Schedule { get; set; } = null!;
 
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 
