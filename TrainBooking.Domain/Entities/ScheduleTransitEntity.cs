@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TrainBooking.Domain.Entities
 {
-    public class ScheduleTransitDto
+    public class ScheduleTransitEntity
     {
         public required string TrainNumber { get; set; }
         public required string RouteCities { get; set; }

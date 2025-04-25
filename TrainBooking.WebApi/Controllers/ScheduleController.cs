@@ -21,7 +21,7 @@ namespace TrainBooking.API.Controllers
 
         // Метод для отримання розкладу потягів за містами та датою
         [HttpGet("GetSchedule")]
-        public async Task<ActionResult<IEnumerable<ScheduleDto>>> GetTrainSchedule(string cityFrom, string cityTo, DateTime date)
+        public async Task<ActionResult<IEnumerable<ScheduleEntity>>> GetTrainSchedule(string cityFrom, string cityTo, DateTime date)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace TrainBooking.API.Controllers
 
 
         [HttpGet("GetScheduleTransit")]
-        public async Task<ActionResult<IEnumerable<ScheduleTransitDto>>> GetTrainScheduleByCityAndDate(string city, DateTime date, bool isArrival)
+        public async Task<ActionResult<IEnumerable<ScheduleTransitEntity>>> GetTrainScheduleByCityAndDate(string city, DateTime date, bool isArrival)
         {
             try
             {

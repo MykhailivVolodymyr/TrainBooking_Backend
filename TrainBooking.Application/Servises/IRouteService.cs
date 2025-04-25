@@ -9,6 +9,6 @@ namespace TrainBooking.Application.Servises
 {
     public interface IRouteService
     {
-        Task<IEnumerable<RouteDetailsDto>> GetRouteDetailsByTrainNumberAsync(string trainNumber);
+        Task<IEnumerable<RouteDetailsEntity>> GetRouteDetailsByTrainNumberAsync(string trainNumber);
     }
 }

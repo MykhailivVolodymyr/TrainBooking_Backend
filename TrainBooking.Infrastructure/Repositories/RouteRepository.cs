@@ -18,14 +18,14 @@ namespace TrainBooking.Infrastructure.Repositories
         {
             this.dbContext = dbContext;
         }
-        public async Task<IEnumerable<RouteDetailsDto>> GetRouteDetailsByTrainNumberAsync(string trainNumber)
+        public async Task<IEnumerable<RouteDetailsEntity>> GetRouteDetailsByTrainNumberAsync(string trainNumber)
         {
             return await dbContext.Trains
                 .AsNoTracking()
                 .Where(t => t.Number == trainNumber)
                 .SelectMany(t => t.Route.RouteStations)
                 .OrderBy(rs => rs.StationOrder)
-                .Select(rs => new RouteDetailsDto
+                .Select(rs => new RouteDetailsEntity
                 {
                     StationName = rs.Station.StationName,
                     City = rs.Station.City,

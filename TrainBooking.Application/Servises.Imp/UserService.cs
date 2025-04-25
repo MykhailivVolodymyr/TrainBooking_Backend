@@ -55,8 +55,6 @@ namespace TrainBooking.Application.Servises.Imp
             if (user == null)
                 user = await _userRepository.GetUserByLoginAsync(userLoginDto.LoginOrEmail);
 
-            Console.WriteLine(user.Role);
-
             if (user == null)
                 throw new UnauthorizedAccessException("Користувача не знайдено");
 
@@ -67,8 +65,6 @@ namespace TrainBooking.Application.Servises.Imp
 
             var token = _jwtProvider.GenerateToken(user);
             
-
-            // Якщо все ок, повертаємо токен (або що потрібно)
             return token;
         }
 

@@ -23,7 +23,10 @@ namespace TrainBooking.WebApi.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtProvider, JwtProvider>();
-            
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IStationService, StationService>();
+
+
             return services;
         }
 
@@ -35,7 +38,11 @@ namespace TrainBooking.WebApi.Extensions
             services.AddScoped<ICarriageRepository, CarriageRepository>();
             services.AddScoped<ISeatRepository, SeatRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-           
+            services.AddScoped<ITripRepository, TripRepository>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IStationRepository, StationRepository>();
+
             return services;
         }
 

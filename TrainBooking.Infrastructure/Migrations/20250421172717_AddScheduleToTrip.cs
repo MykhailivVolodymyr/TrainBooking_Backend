@@ -14,10 +14,6 @@ namespace TrainBooking.Infrastructure.Migrations
                 name: "FK_Ticket_Schedule",
                 table: "Ticket");
 
-            //migrationBuilder.DropIndex(
-            //    name: "IX_Ticket_ScheduleId",
-            //    table: "Ticket");
-
             migrationBuilder.DropColumn(
                 name: "ScheduleId",
                 table: "Ticket");
@@ -63,11 +59,6 @@ namespace TrainBooking.Infrastructure.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
-
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_Ticket_ScheduleId",
-            //    table: "Ticket",
-            //    column: "ScheduleId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Ticket_Schedule",

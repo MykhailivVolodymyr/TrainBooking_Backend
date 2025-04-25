@@ -21,9 +21,9 @@ namespace TrainBooking.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
         
-        public async Task<IEnumerable<ScheduleDto>> GetTrainSchedule(string cityFrom, string cityTo, DateTime date)
+        public async Task<IEnumerable<ScheduleEntity>> GetTrainSchedule(string cityFrom, string cityTo, DateTime date)
         {
-            var schedules = new List<ScheduleDto>();
+            var schedules = new List<ScheduleEntity>();
 
             var connection = dbContext.Database.GetDbConnection();
             await using (connection)
@@ -54,7 +54,7 @@ namespace TrainBooking.Infrastructure.Repositories
 
                 while (await reader.ReadAsync())
                 {
-                    var schedule = new ScheduleDto
+                    var schedule = new ScheduleEntity
                     {
                         ScheduleId = reader.GetInt32(reader.GetOrdinal("ScheduleId")),
                         TrainId = reader.GetInt32(reader.GetOrdinal("TrainId")),
@@ -79,9 +79,9 @@ namespace TrainBooking.Infrastructure.Repositories
 
 
 
-        public async Task<IEnumerable<ScheduleTransitDto>> GetTrainScheduleByCityAndDate(string city, DateTime date, bool isArrival)
+        public async Task<IEnumerable<ScheduleTransitEntity>> GetTrainScheduleByCityAndDate(string city, DateTime date, bool isArrival)
         {
-            var schedules = new List<ScheduleTransitDto>();
+            var schedules = new List<ScheduleTransitEntity>();
 
             var connection = dbContext.Database.GetDbConnection();
             await using (connection)
@@ -114,7 +114,7 @@ namespace TrainBooking.Infrastructure.Repositories
 
                 while (await reader.ReadAsync())
                 {
-                    var schedule = new ScheduleTransitDto
+                    var schedule = new ScheduleTransitEntity
                     {
                         TrainNumber = reader.GetString(reader.GetOrdinal("TrainNumber")),
                         RouteCities = reader.GetString(reader.GetOrdinal("RouteCities")),

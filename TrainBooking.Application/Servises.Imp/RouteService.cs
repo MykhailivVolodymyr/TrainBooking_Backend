@@ -15,7 +15,7 @@ namespace TrainBooking.Application.Servises.Imp
         {
             _routeRepository = routeRepository;
         }
-        public async Task<IEnumerable<RouteDetailsDto>> GetRouteDetailsByTrainNumberAsync(string trainNumber)
+        public async Task<IEnumerable<RouteDetailsEntity>> GetRouteDetailsByTrainNumberAsync(string trainNumber)
         {
             var stations = await _routeRepository.GetRouteDetailsByTrainNumberAsync(trainNumber);
             return stations;
