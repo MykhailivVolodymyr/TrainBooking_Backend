@@ -21,6 +21,7 @@ namespace TrainBooking.Application.Servises.Imp
             _jwtProvider = jwtProvider;
             _stationService = stationServise;
         }
+        //To do додати оплату
         public async Task PurchaseTicketAsync(string token, TicketDto ticketDto, TripDto tripDto)
         {
             await _unitOfWork.BeginTransactionAsync();
@@ -54,6 +55,34 @@ namespace TrainBooking.Application.Servises.Imp
                 await _unitOfWork.RollbackTransactionAsync();
                 throw;
             }
+        }
+
+        public async Task ReturnTicketAsync(int ticketId)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                Trip? trip = await _unitOfWork.TripRepository.GetTripByTickedId(ticketId);
+                if (trip.DepartureTime.AddHours(-1) > DateTime.UtcNow)
+                {
+
+                    await _unitOfWork.TicketRepository.ReturnTicketAsync(ticketId);
+
+                    // (опціонально) оновити статус оплати
+                    await _unitOfWork.SaveAsync();
+                    await _unitOfWork.CommitTransactionAsync();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Ви не можете повернути квиток оськільки час відправлення вже настав");
+                }
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw;
+            }
+
         }
     }
 }

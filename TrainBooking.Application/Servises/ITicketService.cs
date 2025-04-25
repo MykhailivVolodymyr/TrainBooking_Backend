@@ -11,5 +11,6 @@ namespace TrainBooking.Application.Servises
     public interface ITicketService
     {
         Task PurchaseTicketAsync(string token, TicketDto ticket, TripDto trip);
+        Task ReturnTicketAsync(int ticketId);
     }
 }

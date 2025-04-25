@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,20 @@ namespace TrainBooking.Infrastructure.Repositories
         public async Task AddTripAsync(Trip trip)
         {
             await dbContext.Trips.AddAsync(trip);
-        }   
+        }
+
+        public async Task<Trip?> GetTripByTickedId(int ticketId)
+        {
+            var tripId = await dbContext.Tickets
+                 .Where(t => t.TicketId == ticketId)
+                 .Select(t => t.TripId)
+                 .FirstOrDefaultAsync();
+
+            if (tripId == 0)
+                return null;
+
+            return await dbContext.Trips.FindAsync(tripId);
+        }
     }
+
 }

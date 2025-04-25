@@ -10,5 +10,6 @@ namespace TrainBooking.Domain.Abstractions
     public interface ITicketRepository
     {
         Task AddTicketAsync(Ticket ticket);
+        Task ReturnTicketAsync(int ticketId);
     }
 }

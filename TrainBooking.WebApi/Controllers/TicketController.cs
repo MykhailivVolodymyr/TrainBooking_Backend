@@ -13,9 +13,9 @@ namespace TrainBooking.Web.Controllers
         public TripDto Trip { get; set; }
     }
 
-    
 
-   
+
+
 
 
 
@@ -31,11 +31,11 @@ namespace TrainBooking.Web.Controllers
             _ticketService = ticketService;
         }
 
-       
+
         [HttpPost("purchase")]
         public async Task<IActionResult> PurchaseTicket([FromBody] TicketPurchaseModel model)
         {
-            
+
             var token = Request.Cookies["Jwt-token"];
             if (string.IsNullOrEmpty(token))
             {
@@ -53,8 +53,26 @@ namespace TrainBooking.Web.Controllers
             }
             catch (Exception ex)
             {
-                
+
                 return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("returnTicket/{ticketId}")]
+        public async Task<IActionResult> ReturnTicket(int ticketId)
+        {
+            try
+            {
+                await _ticketService.ReturnTicketAsync(ticketId);
+                return Ok(new { message = "Квиток успішно повернуто." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Сталася помилка при поверненні квитка.", error = ex.Message });
             }
         }
     }

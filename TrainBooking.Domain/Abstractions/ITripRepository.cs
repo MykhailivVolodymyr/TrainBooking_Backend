@@ -10,5 +10,6 @@ namespace TrainBooking.Domain.Abstractions
     public interface ITripRepository
     {
         Task AddTripAsync(Trip trip);
+        Task<Trip?> GetTripByTickedId(int ticketId);
     }
 }

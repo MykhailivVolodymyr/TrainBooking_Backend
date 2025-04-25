@@ -16,6 +16,7 @@ public partial class Ticket
     public int? PaymentId { get; set; }
 
     public decimal TicketPrice { get; set; }
+    public bool IsReturned { get; set; } = false;
 
     public virtual Payment? Payment { get; set; }
 
