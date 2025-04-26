@@ -2,24 +2,12 @@
 using TrainBooking.Application.Servises;
 using TrainBooking.Domain.Models;
 using TrainBooking.Application.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrainBooking.Web.Controllers
 {
 
-    // Створюємо клас для об'єднання Ticket і Trip
-    public class TicketPurchaseModel
-    {
-        public TicketDto Ticket { get; set; }
-        public TripDto Trip { get; set; }
-    }
-
-
-
-
-
-
-
-
+   
     [Route("api/[controller]")]
     [ApiController]
     public class TicketController : ControllerBase
@@ -31,7 +19,7 @@ namespace TrainBooking.Web.Controllers
             _ticketService = ticketService;
         }
 
-
+        [Authorize]
         [HttpPost("purchase")]
         public async Task<IActionResult> PurchaseTicket([FromBody] TicketPurchaseModel model)
         {
@@ -57,7 +45,7 @@ namespace TrainBooking.Web.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
+        [Authorize]
         [HttpPost("returnTicket/{ticketId}")]
         public async Task<IActionResult> ReturnTicket(int ticketId)
         {
@@ -73,6 +61,47 @@ namespace TrainBooking.Web.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Сталася помилка при поверненні квитка.", error = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpGet("user/tickets")]
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets()
+        {
+            var token = Request.Cookies["Jwt-token"];
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("Token is required");
+            }
+            try
+            {
+               var tickets =  await _ticketService.GetTicketsByUserIdAsync(token);
+
+                return Ok(tickets);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        [Authorize]
+        [HttpGet("user/ticket/{ticketId}")]
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTicket(int ticketId)
+        {
+           
+            try
+            {
+                var ticket = await _ticketService.GetTicketByTicketIdAsync(ticketId);
+
+                return Ok(ticket);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
     }

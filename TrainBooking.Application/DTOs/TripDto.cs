@@ -16,4 +16,10 @@ namespace TrainBooking.Application.DTOs
         public int SheduleId { get; set; }
 
     }
+
+    public class TicketPurchaseModel
+    {
+        public TicketCreateDto Ticket { get; set; }
+        public TripDto Trip { get; set; }
+    }
 }

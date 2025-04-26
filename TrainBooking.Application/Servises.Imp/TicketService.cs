@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TrainBooking.Application.DTOs;
 using TrainBooking.Application.Servises.Auth;
 using TrainBooking.Domain.Abstractions;
+using TrainBooking.Domain.Entities;
 using TrainBooking.Domain.Models;
 
 namespace TrainBooking.Application.Servises.Imp
@@ -15,14 +16,17 @@ namespace TrainBooking.Application.Servises.Imp
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtProvider _jwtProvider;
         private readonly IStationService _stationService;
-        public TicketService(IUnitOfWork unitOfWork, IJwtProvider jwtProvider, IStationService stationServise)
+        private readonly ITicketRepository _ticketRepository;
+        public TicketService(IUnitOfWork unitOfWork, IJwtProvider jwtProvider, IStationService stationServise, ITicketRepository ticketRepository)
         {
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
             _stationService = stationServise;
+            _ticketRepository = ticketRepository;
         }
+
         //To do додати оплату
-        public async Task PurchaseTicketAsync(string token, TicketDto ticketDto, TripDto tripDto)
+        public async Task PurchaseTicketAsync(string token, TicketCreateDto ticketDto, TripDto tripDto)
         {
             await _unitOfWork.BeginTransactionAsync();
             try
@@ -82,7 +86,17 @@ namespace TrainBooking.Application.Servises.Imp
                 await _unitOfWork.RollbackTransactionAsync();
                 throw;
             }
+        }
+        public async Task<IEnumerable<TicketEntity>> GetTicketsByUserIdAsync(string token)
+        {
+            var userId = _jwtProvider.GetUserIdFromToken(token);
+            return await _ticketRepository.GetTicketsAsync(t => t.UserId == userId);
+        }
 
+        public async Task<TicketEntity?> GetTicketByTicketIdAsync(int ticketId)
+        {
+            var tickets = await _ticketRepository.GetTicketsAsync(t => t.TicketId == ticketId);
+            return tickets.FirstOrDefault();
         }
     }
 }
