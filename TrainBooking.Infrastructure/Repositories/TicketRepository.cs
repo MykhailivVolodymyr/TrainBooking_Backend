@@ -55,7 +55,8 @@ namespace TrainBooking.Infrastructure.Repositories
                     ArrivalCity = t.Trip.EndStation.City,
                     DepartureTime = t.Trip.DepartureTime,
                     ArrivalTime = t.Trip.ArrivalTime,
-                    TicketPrice = t.TicketPrice
+                    TicketPrice = t.TicketPrice,
+                    PurchaseDate = t.PurchaseDate
                 });
 
             var ticketData = await ticketDataQuery.ToListAsync();
@@ -95,7 +96,8 @@ namespace TrainBooking.Infrastructure.Repositories
                 ArrivalCity = t.ArrivalCity,
                 DepartureTime = t.DepartureTime,
                 ArrivalTime = t.ArrivalTime,
-                TicketPrice = t.TicketPrice
+                TicketPrice = t.TicketPrice,
+                PurchaseDate = t.PurchaseDate
             });
         }
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainBooking.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TrainBooking.Infrastructure.Data;
 namespace TrainBooking.Infrastructure.Migrations
 {
     [DbContext(typeof(TrainBookingDbContext))]
-    partial class TrainBookingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250426131228_AddPurchaseDateToTicket")]
+    partial class AddPurchaseDateToTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

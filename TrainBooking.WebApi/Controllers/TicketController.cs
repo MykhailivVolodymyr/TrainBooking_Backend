@@ -3,20 +3,21 @@ using TrainBooking.Application.Servises;
 using TrainBooking.Domain.Models;
 using TrainBooking.Application.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using TrainBooking.Application.Servises.PDF;
 
 namespace TrainBooking.Web.Controllers
 {
-
-   
     [Route("api/[controller]")]
     [ApiController]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _ticketService;
+        private readonly IPdfGeneratorService _pdfGeneratorService;
 
-        public TicketController(ITicketService ticketService)
+        public TicketController(ITicketService ticketService, IPdfGeneratorService pdfGenerator)
         {
             _ticketService = ticketService;
+            _pdfGeneratorService = pdfGenerator;
         }
 
         [Authorize]
@@ -45,6 +46,7 @@ namespace TrainBooking.Web.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
         [Authorize]
         [HttpPost("returnTicket/{ticketId}")]
         public async Task<IActionResult> ReturnTicket(int ticketId)
@@ -86,21 +88,26 @@ namespace TrainBooking.Web.Controllers
             }
         }
 
-
         [Authorize]
         [HttpGet("user/ticket/{ticketId}")]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicket(int ticketId)
         {
-           
             try
             {
                 var ticket = await _ticketService.GetTicketByTicketIdAsync(ticketId);
 
-                return Ok(ticket);
+                if (ticket == null)
+                {
+                    return NotFound("Ticket not found.");
+                }
+                var pdfBytes = await _pdfGeneratorService.GenerateTicketPdfAsync(ticket);
+
+                var fileName = $"{ticket.FullName.Replace(" ", "")}-{ticket.DepartureTime:yyyy-MM-dd}.pdf";
+
+                return File(pdfBytes, "application/pdf", fileName);
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

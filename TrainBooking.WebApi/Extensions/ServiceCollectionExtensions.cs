@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Options;
+using TrainBooking.Application.Servises.PDF;
+using TrainBooking.Application.Servises.Imp.PDF;
 
 namespace TrainBooking.WebApi.Extensions
 {
@@ -25,7 +27,8 @@ namespace TrainBooking.WebApi.Extensions
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<IStationService, StationService>();
-
+            services.AddScoped<IPdfGeneratorService, PdfGeneratorService>();
+            services.AddScoped<IQrCodeGeneratorService, QrCodeGeneratorService>();
 
             return services;
         }

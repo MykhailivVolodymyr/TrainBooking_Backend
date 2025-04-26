@@ -17,6 +17,7 @@ public partial class Ticket
 
     public decimal TicketPrice { get; set; }
     public bool IsReturned { get; set; } = false;
+    public DateTime PurchaseDate { get; set; } = DateTime.Now;
 
     public virtual Payment? Payment { get; set; }
 

@@ -24,6 +24,7 @@ namespace TrainBooking.Domain.Entities
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
 
+        public DateTime PurchaseDate { get; set; }
         public decimal TicketPrice { get; set; }
     }
 }

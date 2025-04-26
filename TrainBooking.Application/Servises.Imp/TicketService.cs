@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TrainBooking.Application.DTOs;
 using TrainBooking.Application.Servises.Auth;
+using TrainBooking.Application.Servises.PDF;
 using TrainBooking.Domain.Abstractions;
 using TrainBooking.Domain.Entities;
 using TrainBooking.Domain.Models;
