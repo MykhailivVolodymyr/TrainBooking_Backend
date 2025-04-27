@@ -38,6 +38,7 @@ namespace TrainBooking.Infrastructure.Repositories
         public async Task<IEnumerable<TicketEntity>> GetTicketsAsync(Expression<Func<Ticket, bool>> predicate)
         {
             var ticketDataQuery = dbContext.Tickets
+                .Where(t => !t.IsReturned)
                 .Where(predicate)
                 .Select(t => new
                 {

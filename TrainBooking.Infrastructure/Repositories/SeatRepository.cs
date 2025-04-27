@@ -22,5 +22,22 @@ namespace TrainBooking.Infrastructure.Repositories
         {
             return await dbContext.Seats.Where(s => s.CarriageId == carriageId).ToListAsync();
         }
+
+        public async Task<IEnumerable<Seat>> GetAvailableSeatsByCarriageAndScheduleAsync(int carriageId, int scheduleId)
+        {
+            // 1. Витягуємо всі зайняті SeatId для заданого ScheduleId
+            var bookedSeatIds = await dbContext.Tickets
+                .Where(t => t.Trip.ScheduleId == scheduleId)
+                .Select(t => t.SeatId)
+                .ToListAsync();
+
+            // 2. Витягуємо всі місця у вказаному вагоні, які ще не зайняті
+            var seats = await dbContext.Seats
+                .Where(s => s.CarriageId == carriageId && !bookedSeatIds.Contains(s.SeatId))
+                .ToListAsync();
+
+            return seats;
+        }
+
     }
 }

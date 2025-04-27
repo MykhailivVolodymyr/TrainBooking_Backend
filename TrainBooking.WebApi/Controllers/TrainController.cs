@@ -17,7 +17,6 @@ namespace TrainBooking.WebApi.Controllers
             _trainStructureService = trainStructureService;
         }
 
-        [Authorize(Roles = "User")]
         [HttpGet("{trainNumber}/structure")]
         public async Task<IActionResult> GetTrainStructure(string trainNumber)
         {
@@ -35,9 +34,29 @@ namespace TrainBooking.WebApi.Controllers
                 }
                 return Ok(result);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(500, "An unexpected error occurred while processing the request.");
+                return StatusCode(500, "An unexpected error occurred while processing the request." + e.Message);
+            }
+        }
+
+
+        [HttpGet("{scheduleId}/AvalibleSeats")]
+        public async Task<IActionResult> GetTrainAvalibleSeats(int scheduleId)
+        {
+            try
+            {
+                var result = await _trainStructureService.GetTrainStructureWithAvalibleSeatsAsync(scheduleId);
+
+                if (result == null)
+                {
+                    return NotFound($"Schedule with id '{scheduleId}' not found.");
+                }
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, "An unexpected error occurred while processing the request." + e.Message);
             }
         }
     }

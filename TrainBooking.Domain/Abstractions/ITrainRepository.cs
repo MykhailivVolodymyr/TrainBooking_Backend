@@ -10,5 +10,6 @@ namespace TrainBooking.Domain.Abstractions
     public interface ITrainRepository
     {
         Task<Train?> GetByNumberAsync(string trainNumber);
+        Task<Train?> GetByScheduleIdAsync(int scheduleId);
     }
 }

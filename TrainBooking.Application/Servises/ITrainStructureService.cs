@@ -10,5 +10,6 @@ namespace TrainBooking.Application.Servises
     public interface ITrainStructureService
     {
         Task<TrainStructureDto> GetTrainStructureAsync(string trainNumber);
+        Task<TrainStructureDto> GetTrainStructureWithAvalibleSeatsAsync(int scheduleId);
     }
 }

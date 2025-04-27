@@ -10,5 +10,6 @@ namespace TrainBooking.Domain.Abstractions
     public interface ISeatRepository
     {
         Task<IEnumerable<Seat>> GetByCarriageIdAsync(int carriageId);
+        Task<IEnumerable<Seat>> GetAvailableSeatsByCarriageAndScheduleAsync(int carriageId, int scheduleId);
     }
 }

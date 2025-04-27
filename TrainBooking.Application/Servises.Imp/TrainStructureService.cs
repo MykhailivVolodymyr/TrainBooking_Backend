@@ -20,9 +20,14 @@ namespace TrainBooking.Application.Servises.Imp
             _carriageRepository = carriageRepository;
             _seatRepository = seatRepository;
         }
-        public async Task<TrainStructureDto> GetTrainStructureAsync(string trainNumber)
+
+        // Приватний метод, який будує структуру потяга
+        private async Task<TrainStructureDto> BuildTrainStructureAsync(string trainNumber, int? scheduleId = null)
         {
-            var train = await _trainRepository.GetByNumberAsync(trainNumber);
+            var train = scheduleId == null
+                ? await _trainRepository.GetByNumberAsync(trainNumber)  // Якщо не передано scheduleId, шукаємо за номером потяга
+                : await _trainRepository.GetByScheduleIdAsync(scheduleId.Value);  // Якщо є scheduleId, шукаємо за розкладом
+
             if (train == null)
             {
                 return null;
@@ -38,8 +43,10 @@ namespace TrainBooking.Application.Servises.Imp
 
             foreach (var carriage in carriages)
             {
-                // Отримуємо місця для кожного вагона
-                var seats = await _seatRepository.GetByCarriageIdAsync(carriage.CarriageId);
+                // Отримуємо місця для кожного вагона (в залежності від того, чи передано scheduleId)
+                var seats = scheduleId == null
+                    ? await _seatRepository.GetByCarriageIdAsync(carriage.CarriageId)  // Якщо scheduleId відсутній, отримуємо всі місця
+                    : await _seatRepository.GetAvailableSeatsByCarriageAndScheduleAsync(carriage.CarriageId, scheduleId.Value);  // Якщо scheduleId є, отримуємо доступні місця
 
                 var carriageDto = new CarriageDto
                 {
@@ -58,6 +65,16 @@ namespace TrainBooking.Application.Servises.Imp
             }
 
             return trainStructureDto;
+        }
+
+        public async Task<TrainStructureDto> GetTrainStructureAsync(string trainNumber)
+        {
+            return await BuildTrainStructureAsync(trainNumber);
+        }
+
+        public async Task<TrainStructureDto> GetTrainStructureWithAvalibleSeatsAsync(int scheduleId)
+        {
+            return await BuildTrainStructureAsync(null, scheduleId);
         }
     }
 }

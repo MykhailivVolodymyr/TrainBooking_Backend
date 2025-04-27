@@ -20,7 +20,13 @@ namespace TrainBooking.Infrastructure.Repositories
         }
         public async Task<Train?> GetByNumberAsync(string trainNumber)
         {
-           return await dbContext.Trains.FirstOrDefaultAsync(t => t.Number == trainNumber);
+            return await dbContext.Trains.FirstOrDefaultAsync(t => t.Number == trainNumber);
+        }
+
+        public async Task<Train?> GetByScheduleIdAsync(int scheduleId)
+        {
+            return await dbContext.Schedules.Where(s => s.ScheduleId == scheduleId).Select(s => s.Train).FirstOrDefaultAsync();
         }
     }
+
 }
