@@ -9,6 +9,7 @@ namespace TrainBooking.Application.DTOs
     public class TrainStructureDto
     {
         public string TrainNumber { get; set; }
+        public string? TrainType { get; set; }
         public List<CarriageDto> Carriages { get; set; }
     }
 

@@ -13,6 +13,7 @@ namespace TrainBooking.Domain.Entities
         public required string TrainNumber { get; set; }
         public string RouteCities { get; set; }
         public int RouteId { get; set; }
+        public int StationCount { get; set; }
         public DateOnly RealDepartureDateFromCity { get; set; }
         public DateOnly DepartureDateFromStart { get; set; }
         public string FromStationName { get; set; }

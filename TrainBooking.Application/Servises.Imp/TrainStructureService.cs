@@ -21,7 +21,6 @@ namespace TrainBooking.Application.Servises.Imp
             _seatRepository = seatRepository;
         }
 
-        // Приватний метод, який будує структуру потяга
         private async Task<TrainStructureDto> BuildTrainStructureAsync(string trainNumber, int? scheduleId = null)
         {
             var train = scheduleId == null
@@ -38,12 +37,12 @@ namespace TrainBooking.Application.Servises.Imp
             var trainStructureDto = new TrainStructureDto
             {
                 TrainNumber = train.Number,
+                TrainType = train.Type,
                 Carriages = new List<CarriageDto>()
             };
 
             foreach (var carriage in carriages)
             {
-                // Отримуємо місця для кожного вагона (в залежності від того, чи передано scheduleId)
                 var seats = scheduleId == null
                     ? await _seatRepository.GetByCarriageIdAsync(carriage.CarriageId)  // Якщо scheduleId відсутній, отримуємо всі місця
                     : await _seatRepository.GetAvailableSeatsByCarriageAndScheduleAsync(carriage.CarriageId, scheduleId.Value);  // Якщо scheduleId є, отримуємо доступні місця

@@ -61,6 +61,7 @@ namespace TrainBooking.Infrastructure.Repositories
                         TrainNumber = reader.GetString(reader.GetOrdinal("TrainNumber")),
                         RouteCities = reader.GetString(reader.GetOrdinal("RouteCities")),
                         RouteId = reader.GetInt32(reader.GetOrdinal("RouteId")),
+                        StationCount = reader.GetInt32(reader.GetOrdinal("StationCount")),
                         RealDepartureDateFromCity = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("RealDepartureDateFromCity"))),
                         DepartureDateFromStart = DateOnly.FromDateTime(reader.GetDateTime(reader.GetOrdinal("DepartureDateFromStart"))),
                         FromStationName = reader.GetString(reader.GetOrdinal("FromStationName")),
@@ -92,19 +93,16 @@ namespace TrainBooking.Infrastructure.Repositories
                 command.CommandText = "dbo.GetTrainScheduleByCityAndDate";
                 command.CommandType = CommandType.StoredProcedure;
 
-                // Параметр @City
                 var paramCity = command.CreateParameter();
                 paramCity.ParameterName = "@City";
                 paramCity.Value = city;
                 command.Parameters.Add(paramCity);
 
-                // Параметр @Date
                 var paramDate = command.CreateParameter();
                 paramDate.ParameterName = "@Date";
                 paramDate.Value = date.Date;
                 command.Parameters.Add(paramDate);
 
-                // Параметр @IsArrival
                 var paramArrival = command.CreateParameter();
                 paramArrival.ParameterName = "@IsArrival";
                 paramArrival.Value = isArrival;
