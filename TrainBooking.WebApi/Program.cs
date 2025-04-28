@@ -2,12 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TrainBooking.Infrastructure.Data;
 using TrainBooking.Infrastructure.Providers;
+using TrainBooking.Application.Servises.Imp.Email;
 using TrainBooking.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(nameof(EmailOptions)));
 // Add services to the container.
 builder.Services.AddDbContext<TrainBookingDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

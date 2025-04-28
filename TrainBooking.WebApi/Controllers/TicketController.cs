@@ -4,6 +4,7 @@ using TrainBooking.Domain.Models;
 using TrainBooking.Application.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using TrainBooking.Application.Servises.PDF;
+using TrainBooking.Application.Servises.Email;
 
 namespace TrainBooking.Web.Controllers
 {
@@ -13,11 +14,13 @@ namespace TrainBooking.Web.Controllers
     {
         private readonly ITicketService _ticketService;
         private readonly IPdfGeneratorService _pdfGeneratorService;
+        private readonly IEmailService _emailService;
 
-        public TicketController(ITicketService ticketService, IPdfGeneratorService pdfGenerator)
+        public TicketController(ITicketService ticketService, IPdfGeneratorService pdfGenerator, IEmailService emailService)
         {
             _ticketService = ticketService;
             _pdfGeneratorService = pdfGenerator;
+            _emailService = emailService;
         }
 
         [Authorize]
@@ -36,7 +39,40 @@ namespace TrainBooking.Web.Controllers
             }
             try
             {
-                await _ticketService.PurchaseTicketAsync(token, model.Ticket, model.Trip);
+               var ticketId = await _ticketService.PurchaseTicketAsync(token, model.Ticket, model.Trip);
+                var ticket = await _ticketService.GetTicketByTicketIdAsync(ticketId);
+
+                if (ticket == null)
+                {
+                    return NotFound("Ticket not found.");
+                }
+
+                var body = $@"Шановний клієнте,
+
+                        Дякуємо, що скористались нашими послугами! Ми раді повідомити, що ваш залізничний квиток був успішно придбаний. Ось ваш квиток на поїзд:
+
+                        Дата і час відправлення: {ticket.DepartureTime:yyyy-MM-dd HH:mm}
+                        Номер поїзда: {ticket.TrainNumber}
+                        Номер вагона: {ticket.CarriageNumber}
+                        Місце: {ticket.SeatNumber}
+
+                        Документ з квитком у вигляді PDF додається до цього листа для вашої зручності.
+
+                        Якщо у вас виникли питання або необхідність змінити квиток, будь ласка, звертайтесь до нашої служби підтримки.
+
+                        З найкращими побажаннями,
+                        Команда компанії TrainBooking, що продає залізничні квитки
+                        Телефон служби підтримки: {"066666666"}
+                        Email служби підтримки: {"supportEmail@gmail.com"}";
+
+
+
+                var pdfBytes = await _pdfGeneratorService.GenerateTicketPdfAsync(ticket);
+
+                var fileName = $"{ticket.FullName.Replace(" ", "")}-{ticket.DepartureTime:yyyy-MM-dd}.pdf";
+
+                await _emailService.SendTicketEmailAsync(token, pdfBytes, fileName, body);
+
 
                 return Ok("Ticket purchased successfully");
             }
@@ -100,6 +136,7 @@ namespace TrainBooking.Web.Controllers
                 {
                     return NotFound("Ticket not found.");
                 }
+
                 var pdfBytes = await _pdfGeneratorService.GenerateTicketPdfAsync(ticket);
 
                 var fileName = $"{ticket.FullName.Replace(" ", "")}-{ticket.DepartureTime:yyyy-MM-dd}.pdf";

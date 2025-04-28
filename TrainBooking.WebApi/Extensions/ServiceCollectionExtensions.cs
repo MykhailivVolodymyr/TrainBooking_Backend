@@ -12,6 +12,8 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using TrainBooking.Application.Servises.PDF;
 using TrainBooking.Application.Servises.Imp.PDF;
+using TrainBooking.Application.Servises.Email;
+using TrainBooking.Application.Servises.Imp.Email;
 
 namespace TrainBooking.WebApi.Extensions
 {
@@ -29,6 +31,7 @@ namespace TrainBooking.WebApi.Extensions
             services.AddScoped<IStationService, StationService>();
             services.AddScoped<IPdfGeneratorService, PdfGeneratorService>();
             services.AddScoped<IQrCodeGeneratorService, QrCodeGeneratorService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }

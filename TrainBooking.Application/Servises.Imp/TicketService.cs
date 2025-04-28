@@ -27,7 +27,7 @@ namespace TrainBooking.Application.Servises.Imp
         }
 
         //To do додати оплату
-        public async Task PurchaseTicketAsync(string token, TicketCreateDto ticketDto, TripDto tripDto)
+        public async Task<int> PurchaseTicketAsync(string token, TicketCreateDto ticketDto, TripDto tripDto)
         {
             await _unitOfWork.BeginTransactionAsync();
             try
@@ -53,7 +53,11 @@ namespace TrainBooking.Application.Servises.Imp
                 await _unitOfWork.TicketRepository.AddTicketAsync(ticket);
                 await _unitOfWork.SaveAsync();
 
+                
+                var ticketId = ticket.TicketId;
+                Console.WriteLine(ticketId);
                 await _unitOfWork.CommitTransactionAsync();
+                return ticketId;
             }
             catch (Exception ex)
             {
