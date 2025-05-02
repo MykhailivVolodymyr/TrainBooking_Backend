@@ -23,7 +23,7 @@ namespace TrainBooking.Application.Servises.Imp
             _jwtProvider = jwtProvider;
         }
 
-        public async Task AddAsync(UserRegisterDto userDto)
+        public async Task<string> AddAsync(UserRegisterDto userDto)
         {
             // Перевірка унікальності логіна або email
             var existingByLogin = await _userRepository.GetUserByLoginAsync(userDto.Login);
@@ -44,7 +44,10 @@ namespace TrainBooking.Application.Servises.Imp
                 Email = userDto.Email,
             };
 
-              await _userRepository.AddAsync(user);
+            await _userRepository.AddAsync(user);
+
+            var token = _jwtProvider.GenerateToken(user);
+            return token;
         }
 
 

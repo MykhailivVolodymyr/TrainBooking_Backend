@@ -84,7 +84,7 @@ namespace TrainBooking.Web.Controllers
         }
 
         [Authorize]
-        [HttpPost("returnTicket/{ticketId}")]
+        [HttpPatch("tickets/{ticketId}/return")]
         public async Task<IActionResult> ReturnTicket(int ticketId)
         {
             try
@@ -101,6 +101,7 @@ namespace TrainBooking.Web.Controllers
                 return StatusCode(500, new { message = "Сталася помилка при поверненні квитка.", error = ex.Message });
             }
         }
+
 
         [Authorize]
         [HttpGet("user/tickets")]

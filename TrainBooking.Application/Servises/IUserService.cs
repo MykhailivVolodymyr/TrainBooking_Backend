@@ -10,7 +10,7 @@ namespace TrainBooking.Application.Servises
 {
     public interface IUserService
     {
-        Task AddAsync(UserRegisterDto user);
+        Task<string> AddAsync(UserRegisterDto user);
         Task<string> Login(UserLoginDto user);
         Task<UserDto?> GetUserByIdAsync(int userId);
         Task<UserDto?> GetUserByLoginAsync(string login);

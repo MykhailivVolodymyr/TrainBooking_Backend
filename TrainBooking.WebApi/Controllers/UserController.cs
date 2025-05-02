@@ -26,8 +26,15 @@ namespace TrainBooking.WebApi.Controllers
         {
             try
             {
-               
-                await _userService.AddAsync(userDto);
+                string token =  await _userService.AddAsync(userDto);
+                _httpContextAccessor.HttpContext?.Response.Cookies.Append("Jwt-token", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true,
+                    Expires = DateTimeOffset.UtcNow.AddHours(_jwtOptions.ExpiresHours)
+                });
+
                 return StatusCode(201, "Користувача успішно зареєстровано");
             }
             catch (ArgumentException ex)
@@ -39,7 +46,6 @@ namespace TrainBooking.WebApi.Controllers
                 return StatusCode(500, new { error = "Внутрішня помилка сервера" });
             }
         }
-
  
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
@@ -56,7 +62,7 @@ namespace TrainBooking.WebApi.Controllers
                 });
 
 
-                return Ok(new { token });
+                return Ok(new { message = "log in successfully" });
             }
             catch (UnauthorizedAccessException ex)
             {
