@@ -111,5 +111,27 @@ namespace TrainBooking.Application.Servises.Imp
             var tickets = await _ticketRepository.GetTicketsAsync(t => t.TicketId == ticketId);
             return tickets.FirstOrDefault();
         }
+
+        public async Task<IEnumerable<TicketEntity>> GetTicketsByUserIdForAdminAsync(int userId)
+        {
+            return await _ticketRepository.GetTicketsAsync(t => t.UserId == userId);
+        }
+
+        public async Task<IEnumerable<TicketEntity>> GetTicketsByPurcaseDateForAdminAsync(DateTime date)
+        {
+            var startDate = date.Date;  
+            var endDate = date.Date.AddDays(1).AddTicks(-1);  
+
+            return await _ticketRepository.GetTicketsAsync(
+                t => t.PurchaseDate >= startDate && t.PurchaseDate <= endDate);
+        }
+
+
+        public async Task<IEnumerable<TicketEntity>> GetTicketsByTrainNumberForAdminAsync(string trainNumber)
+        {
+            return await _ticketRepository.GetTicketsAsync(t => t.Seat.Carriage.Train.Number == trainNumber);
+        }
+
     }
 }
+

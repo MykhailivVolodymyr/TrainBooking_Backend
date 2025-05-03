@@ -32,6 +32,7 @@ namespace TrainBooking.WebApi.Extensions
             services.AddScoped<IPdfGeneratorService, PdfGeneratorService>();
             services.AddScoped<IQrCodeGeneratorService, QrCodeGeneratorService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ISchedulePatternService, SchedulePatternService>();
 
             return services;
         }
@@ -48,6 +49,7 @@ namespace TrainBooking.WebApi.Extensions
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IStationRepository, StationRepository>();
+            services.AddScoped<ISchedulePatternRepository, SchedulePatternRepository>();
 
             return services;
         }
