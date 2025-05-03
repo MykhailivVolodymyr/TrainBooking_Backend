@@ -19,7 +19,7 @@ namespace TrainBooking.Application.DTOs
 
     public class TicketPurchaseModel
     {
-        public TicketCreateDto Ticket { get; set; }
+        public List<TicketCreateDto> Tickets { get; set; } = new();
         public TripDto Trip { get; set; }
     }
 }

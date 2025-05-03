@@ -27,8 +27,11 @@ namespace TrainBooking.Application.Servises.Imp
         }
 
         //To do додати оплату
-        public async Task<int> PurchaseTicketAsync(string token, TicketCreateDto ticketDto, TripDto tripDto)
+        public async Task<IEnumerable<int>> PurchaseTicketAsync(string token, List<TicketCreateDto> ticketDtos, TripDto tripDto)
         {
+            if (ticketDtos.Count > 4)
+                throw new InvalidOperationException("Неможливо купити більше 4 квитків за один раз.");
+
             await _unitOfWork.BeginTransactionAsync();
             try
             {
@@ -43,21 +46,26 @@ namespace TrainBooking.Application.Servises.Imp
                 await _unitOfWork.TripRepository.AddTripAsync(trip);
                 await _unitOfWork.SaveAsync();
 
-                var ticket = new Ticket() {
-                    UserId = userId,
-                    TripId = trip.TripId,
-                    SeatId = ticketDto.SeatId,
-                    TicketPrice = ticketDto.Price
-                };
+                var ticketIds = new List<int>();
 
-                await _unitOfWork.TicketRepository.AddTicketAsync(ticket);
-                await _unitOfWork.SaveAsync();
+                foreach (var ticketDto in ticketDtos)
+                {
+                    var ticket = new Ticket
+                    {
+                        UserId = userId,
+                        TripId = trip.TripId,
+                        SeatId = ticketDto.SeatId,
+                        TicketPrice = ticketDto.Price
+                    };
 
-                
-                var ticketId = ticket.TicketId;
-                Console.WriteLine(ticketId);
+                    await _unitOfWork.TicketRepository.AddTicketAsync(ticket);
+                    await _unitOfWork.SaveAsync();
+
+                    ticketIds.Add(ticket.TicketId);
+                }
+
                 await _unitOfWork.CommitTransactionAsync();
-                return ticketId;
+                return ticketIds;
             }
             catch (Exception ex)
             {

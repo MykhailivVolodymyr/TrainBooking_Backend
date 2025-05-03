@@ -25,7 +25,7 @@ namespace TrainBooking.Application.Servises.Imp.Email
             _userService = userService;
         }
        
-        public async Task SendTicketEmailAsync(string token, byte[] pdfBytes, string fileName, string body)
+        public async Task SendTicketEmailAsync(string token, List<(byte[] pdf, string fileName)> attachments, string body)
         {
             try
             {
@@ -47,8 +47,11 @@ namespace TrainBooking.Application.Servises.Imp.Email
                 };
                 message.To.Add(user.Email);
 
-                var attachment = new Attachment(new MemoryStream(pdfBytes), fileName, "application/pdf");
-                message.Attachments.Add(attachment);
+                foreach (var (pdf, fileName) in attachments)
+                {
+                    var attachment = new Attachment(new MemoryStream(pdf), fileName, "application/pdf");
+                    message.Attachments.Add(attachment);
+                }
 
                 await smtpClient.SendMailAsync(message);
             }

@@ -11,7 +11,7 @@ namespace TrainBooking.Application.Servises
 {
     public interface ITicketService
     {
-        Task<int> PurchaseTicketAsync(string token, TicketCreateDto ticket, TripDto trip);
+        Task<IEnumerable<int>> PurchaseTicketAsync(string token, List<TicketCreateDto> tickets, TripDto trip);
         Task ReturnTicketAsync(int ticketId);
         Task<IEnumerable<TicketEntity>> GetTicketsByUserIdAsync(string token);
         Task<TicketEntity?> GetTicketByTicketIdAsync(int ticketId);

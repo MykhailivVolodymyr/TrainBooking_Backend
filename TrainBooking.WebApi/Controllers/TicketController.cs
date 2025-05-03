@@ -5,6 +5,7 @@ using TrainBooking.Application.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using TrainBooking.Application.Servises.PDF;
 using TrainBooking.Application.Servises.Email;
+using System.Text;
 
 namespace TrainBooking.Web.Controllers
 {
@@ -33,48 +34,46 @@ namespace TrainBooking.Web.Controllers
             {
                 return Unauthorized("Token is required");
             }
-            if (model == null || model.Ticket == null || model.Trip == null)
+            if (model == null || model.Tickets == null || model.Trip == null)
             {
                 return BadRequest("Ticket and Trip details are required");
             }
             try
             {
-               var ticketId = await _ticketService.PurchaseTicketAsync(token, model.Ticket, model.Trip);
-                var ticket = await _ticketService.GetTicketByTicketIdAsync(ticketId);
+                var ticketIds = await _ticketService.PurchaseTicketAsync(token, model.Tickets, model.Trip);
 
-                if (ticket == null)
+                var bodyHeader = @"Шановний клієнте,
+
+                        Дякуємо, що скористались нашими послугами! Ось ваші квитки на поїзд:";
+                var pdfs = new List<(byte[] pdf, string fileName)>();
+                var bodyBuilder = new StringBuilder(bodyHeader);
+
+                foreach (var id in ticketIds)
                 {
-                    return NotFound("Ticket not found.");
+                    var ticket = await _ticketService.GetTicketByTicketIdAsync(id);
+                    if (ticket == null) continue;
+
+                    bodyBuilder.AppendLine($@"
+
+                        Дата і час відправлення: {ticket.DepartureTime:yyyy-MM-dd HH:mm}, Номер поїзда: {ticket.TrainNumber}, Номер вагона: {ticket.CarriageNumber}, Місце: {ticket.SeatNumber}");
+
+                    var pdf = await _pdfGeneratorService.GenerateTicketPdfAsync(ticket);
+                    var fileName = $"{ticket.FullName.Replace(" ", "")}-{ticket.DepartureTime:yyyy-MM-dd}.pdf";
+                    pdfs.Add((pdf, fileName));
                 }
 
-                var body = $@"Шановний клієнте,
+                bodyBuilder.AppendLine(@"
 
-                        Дякуємо, що скористались нашими послугами! Ми раді повідомити, що ваш залізничний квиток був успішно придбаний. Ось ваш квиток на поїзд:
+                    Документи з квитками додаються до листа.
 
-                        Дата і час відправлення: {ticket.DepartureTime:yyyy-MM-dd HH:mm}
-                        Номер поїзда: {ticket.TrainNumber}
-                        Номер вагона: {ticket.CarriageNumber}
-                        Місце: {ticket.SeatNumber}
+                    З найкращими побажаннями,
+                    Команда компанії TrainBooking
+                    Телефон: 066666666
+                    Email: supportEmail@gmail.com");
 
-                        Документ з квитком у вигляді PDF додається до цього листа для вашої зручності.
+                await _emailService.SendTicketEmailAsync(token, pdfs, bodyBuilder.ToString());
 
-                        Якщо у вас виникли питання або необхідність змінити квиток, будь ласка, звертайтесь до нашої служби підтримки.
-
-                        З найкращими побажаннями,
-                        Команда компанії TrainBooking, що продає залізничні квитки
-                        Телефон служби підтримки: {"066666666"}
-                        Email служби підтримки: {"supportEmail@gmail.com"}";
-
-
-
-                var pdfBytes = await _pdfGeneratorService.GenerateTicketPdfAsync(ticket);
-
-                var fileName = $"{ticket.FullName.Replace(" ", "")}-{ticket.DepartureTime:yyyy-MM-dd}.pdf";
-
-                await _emailService.SendTicketEmailAsync(token, pdfBytes, fileName, body);
-
-
-                return Ok("Ticket purchased successfully");
+                return Ok("Квитки успішно придбані");
             }
             catch (Exception ex)
             {

@@ -8,6 +8,6 @@ namespace TrainBooking.Application.Servises.Email
 {
     public interface IEmailService
     {
-        public Task SendTicketEmailAsync(string token, byte[] pdfBytes, string fileName, string body);
+        public Task SendTicketEmailAsync(string token, List<(byte[] pdf, string fileName)> attachments, string body);
     }
 }
