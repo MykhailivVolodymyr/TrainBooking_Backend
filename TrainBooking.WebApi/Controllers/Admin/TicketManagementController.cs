@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TrainBooking.Application.Servises;
+using TrainBooking.Application.Servises.Imp.PDF;
+using TrainBooking.Application.Servises.PDF;
 using TrainBooking.Domain.Entities;
 
 namespace TrainBooking.WebApi.Controllers.Admin
@@ -11,9 +13,12 @@ namespace TrainBooking.WebApi.Controllers.Admin
     public class TicketManagementController : ControllerBase
     {
         private readonly ITicketService _ticketService;
-        public TicketManagementController(ITicketService ticketService)
+        private readonly ICsvExporter _csvExporter;
+
+        public TicketManagementController(ITicketService ticketService, ICsvExporter csvExporter)
         {
             _ticketService = ticketService;
+            _csvExporter = csvExporter; 
         }
 
         [Authorize(Roles = "Admin")]
@@ -52,5 +57,7 @@ namespace TrainBooking.WebApi.Controllers.Admin
             return Ok(tickets);
         }
 
+
+      
     }
 }
