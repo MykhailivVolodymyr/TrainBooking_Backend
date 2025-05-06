@@ -33,10 +33,5 @@ namespace TrainBooking.Infrastructure.Repositories
         {
             return await dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
         }
-
-        public async Task<User?> GetUserByLoginAsync(string login)
-        {
-            return await dbContext.Users.FirstOrDefaultAsync(u => u.Login == login);
-        }
     }
 }

@@ -26,8 +26,8 @@ namespace TrainBooking.WebApi.Controllers
         {
             try
             {
-                string token =  await _userService.AddAsync(userDto);
-                _httpContextAccessor.HttpContext?.Response.Cookies.Append("Jwt-token", token, new CookieOptions
+                var loginResult =  await _userService.AddAsync(userDto);
+                _httpContextAccessor.HttpContext?.Response.Cookies.Append("Jwt-token", loginResult.Token, new CookieOptions
                 {
                     HttpOnly = true,
                     SameSite = SameSiteMode.None,
@@ -35,7 +35,12 @@ namespace TrainBooking.WebApi.Controllers
                     Expires = DateTimeOffset.UtcNow.AddHours(_jwtOptions.ExpiresHours)
                 });
 
-                return StatusCode(201, "Користувача успішно зареєстровано");
+                return StatusCode(201, new
+                {
+                    message = "Користувача успішно зареєстровано",
+                    role = loginResult.Role,
+                    fullName = loginResult.FullName
+                });
             }
             catch (ArgumentException ex)
             {

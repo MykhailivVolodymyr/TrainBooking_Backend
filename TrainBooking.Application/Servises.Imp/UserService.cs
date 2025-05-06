@@ -23,14 +23,10 @@ namespace TrainBooking.Application.Servises.Imp
             _jwtProvider = jwtProvider;
         }
 
-        public async Task<string> AddAsync(UserRegisterDto userDto)
+        public async Task<LoginResultDto> AddAsync(UserRegisterDto userDto)
         {
-            // Перевірка унікальності логіна або email
-            var existingByLogin = await _userRepository.GetUserByLoginAsync(userDto.Login);
             var existingByEmail = await _userRepository.GetUserByEmailAsync(userDto.Email);
 
-            if (existingByLogin != null)
-                throw new ArgumentException("Користувач з таким логіном вже існує");
 
             if (existingByEmail != null)
                 throw new ArgumentException("Користувач з таким email вже існує");
@@ -38,7 +34,6 @@ namespace TrainBooking.Application.Servises.Imp
             string passwordHash = _passwordHasher.HashPassword(userDto.Password);
             var user = new User()
             {
-                Login = userDto.Login,
                 FullName = userDto.FullName,
                 PasswordHash = passwordHash,
                 Email = userDto.Email,
@@ -47,16 +42,18 @@ namespace TrainBooking.Application.Servises.Imp
             await _userRepository.AddAsync(user);
 
             var token = _jwtProvider.GenerateToken(user);
-            return token;
+            return new LoginResultDto
+            {
+                Token = token,
+                Role = user.Role,
+                FullName = user.FullName
+            };
         }
 
 
         public async Task<LoginResultDto> Login(UserLoginDto userLoginDto)
         {
-            var user = await _userRepository.GetUserByEmailAsync(userLoginDto.LoginOrEmail);
-
-            if (user == null)
-                user = await _userRepository.GetUserByLoginAsync(userLoginDto.LoginOrEmail);
+            var user = await _userRepository.GetUserByEmailAsync(userLoginDto.Email);
 
             if (user == null)
                 throw new UnauthorizedAccessException("Користувача не знайдено");
@@ -90,10 +87,5 @@ namespace TrainBooking.Application.Servises.Imp
             return user != null ? UserMapper.ToUserDto(user) : null;
         }
 
-        public async Task<UserDto?> GetUserByLoginAsync(string login)
-        {
-            var user = await _userRepository.GetUserByLoginAsync(login);
-            return user != null ? UserMapper.ToUserDto(user) : null;
-        }
     }
 }

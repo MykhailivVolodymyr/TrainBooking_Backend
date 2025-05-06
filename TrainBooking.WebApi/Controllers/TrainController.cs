@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TrainBooking.Application.DTOs;
 using TrainBooking.Application.Servises;
 using TrainBooking.Application.Servises.Imp;
 
@@ -18,7 +19,7 @@ namespace TrainBooking.WebApi.Controllers
         }
 
         [HttpGet("{trainNumber}/structure")]
-        public async Task<IActionResult> GetTrainStructure(string trainNumber)
+        public async Task<ActionResult<TrainStructureDto>> GetTrainStructure(string trainNumber)
         {
             if (string.IsNullOrWhiteSpace(trainNumber))
             {
@@ -42,7 +43,7 @@ namespace TrainBooking.WebApi.Controllers
 
 
         [HttpGet("{scheduleId}/AvalibleSeats")]
-        public async Task<IActionResult> GetTrainAvalibleSeats(int scheduleId)
+        public async Task<ActionResult<TrainStructureDto>> GetTrainAvalibleSeats(int scheduleId)
         {
             try
             {

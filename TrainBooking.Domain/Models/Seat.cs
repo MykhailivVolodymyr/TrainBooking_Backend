@@ -13,8 +13,6 @@ public partial class Seat
 
     public string SeatType { get; set; } = null!;
 
-    public bool IsAvailable { get; set; }
-
     public virtual Carriage Carriage { get; set; } = null!;
 
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();

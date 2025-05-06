@@ -147,7 +147,6 @@ public partial class TrainBookingDbContext : DbContext
 
             entity.ToTable("Seat");
 
-            entity.Property(e => e.IsAvailable).HasDefaultValue(true);
             entity.Property(e => e.SeatType).HasMaxLength(50);
 
             entity.HasOne(d => d.Carriage).WithMany(p => p.Seats)
@@ -256,13 +255,10 @@ public partial class TrainBookingDbContext : DbContext
 
             entity.ToTable("User");
 
-            entity.HasIndex(e => e.Login, "UQ__User__5E55825B1A74FCFF").IsUnique();
-
             entity.HasIndex(e => e.Email, "UQ__User__A9D105341A7E32C7").IsUnique();
 
             entity.Property(e => e.Email).HasMaxLength(200);
             entity.Property(e => e.FullName).HasMaxLength(200);
-            entity.Property(e => e.Login).HasMaxLength(100);
             entity.Property(e => e.PasswordHash).HasMaxLength(255);
             entity.Property(e => e.RegistrationDate)
                 .HasDefaultValueSql("(getdate())")

@@ -32,7 +32,7 @@ namespace TrainBooking.Application.Mappers
         {
             return new User
             {
-                Login = dto.LoginOrEmail, // логін або email — логіку обробки реалізуй окремо
+                Email = dto.Email, // логін або email — логіку обробки реалізуй окремо
                 PasswordHash = dto.Password
             };
         }

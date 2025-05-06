@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrainBooking.Application.Servises;
+using TrainBooking.Domain.Entities;
 
 namespace TrainBooking.WebApi.Controllers
 {
@@ -15,7 +16,7 @@ namespace TrainBooking.WebApi.Controllers
         }
 
         [HttpGet("{number}/stations")]
-        public async Task<IActionResult> GetStations(string number)
+        public async Task<ActionResult<RouteDetailsEntity>> GetStations(string number)
         {
             try
             {
