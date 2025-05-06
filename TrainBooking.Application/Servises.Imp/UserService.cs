@@ -51,7 +51,7 @@ namespace TrainBooking.Application.Servises.Imp
         }
 
 
-        public async Task<string> Login(UserLoginDto userLoginDto)
+        public async Task<LoginResultDto> Login(UserLoginDto userLoginDto)
         {
             var user = await _userRepository.GetUserByEmailAsync(userLoginDto.LoginOrEmail);
 
@@ -67,8 +67,13 @@ namespace TrainBooking.Application.Servises.Imp
                 throw new UnauthorizedAccessException("Невірний пароль");
 
             var token = _jwtProvider.GenerateToken(user);
-            
-            return token;
+
+            return new LoginResultDto   
+            {
+                Token = token,
+                Role = user.Role,         
+                FullName = user.FullName  
+            };
         }
 
 

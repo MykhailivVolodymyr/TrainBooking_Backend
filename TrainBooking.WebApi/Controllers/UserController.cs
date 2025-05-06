@@ -52,8 +52,8 @@ namespace TrainBooking.WebApi.Controllers
         {
             try
             {
-                var token = await _userService.Login(userLoginDto);
-                _httpContextAccessor.HttpContext?.Response.Cookies.Append("Jwt-token", token, new CookieOptions
+                var loginResult = await _userService.Login(userLoginDto);
+                _httpContextAccessor.HttpContext?.Response.Cookies.Append("Jwt-token", loginResult.Token, new CookieOptions
                 {
                     HttpOnly = true,
                     SameSite = SameSiteMode.None,
@@ -62,7 +62,12 @@ namespace TrainBooking.WebApi.Controllers
                 });
 
 
-                return Ok(new { message = "log in successfully" });
+                return Ok(new
+                {
+                    message = "Log in successfully",
+                    role = loginResult.Role,
+                    fullName = loginResult.FullName
+                });
             }
             catch (UnauthorizedAccessException ex)
             {

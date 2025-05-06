@@ -7,6 +7,19 @@ using TrainBooking.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhot3000", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();  // Дозволити куки та заголовки автентифікації
+    });
+});
+
+
+
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
 builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection(nameof(EmailOptions)));
@@ -31,6 +44,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseCors("AllowLocalhot3000");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
